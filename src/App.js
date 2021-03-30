@@ -1,16 +1,24 @@
-import React from 'react';
+import React from "react";
+import propTypes from "prop-types";
+import { BIconFileMinus } from 'bootstrap-vue';
 
-function Food(props){
-  console.log(props)
-  return <h1>poatao</h1>
-}
-function App() {
-  return (
-    <div>
-      <h1>Hello</h1>
-      <Food fav="kimchi" somthing={true} papapapa={["hello", 1,2,3,4, true]} />
-    </div>
+class App extends React.Component{
+  state = {
+    count: 0
+  };
+  add = () => {
+    console.log("add");
+  };
+  minus = () => {
+    console.log("minus");
+  };
+  render() {
+    return <div><h1>Im a class {this.state.count}</h1>
+      <button onClick={this.add}>Add</button>
+      <button onClick={this.minus}>Minus</button></div>
     
-  )}
+
+  }
+}
 
 export default App;
