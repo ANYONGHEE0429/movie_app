@@ -1,23 +1,52 @@
 import React from "react";
-import propTypes from "prop-types";
-import { BIconFileMinus } from 'bootstrap-vue';
+import axios from "axios";
+import Movie from "./Movie";
+import "./App.css";
 
-class App extends React.Component{
+class App extends React.Component {
   state = {
-    count: 0
+    isLoading: true,
+    movies: [],
   };
-  add = () => {
-    console.log("add");
+  getMoives = async () => {
+    const {
+      data: {
+        data: { movies },
+      },
+    } = await axios.get(
+      "https://yts-proxy.nomadcoders1.now.sh/list_movies.json"
+    );
+    this.setState({ movies, isLoading: false }); //movies.data.data.movies
   };
-  minus = () => {
-    console.log("minus");
-  };
-  render() {
-    return <div><h1>Im a class {this.state.count}</h1>
-      <button onClick={this.add}>Add</button>
-      <button onClick={this.minus}>Minus</button></div>
-    
 
+  componentDidMount() {
+    this.getMoives();
+  }
+  render() {
+    const { isLoading, movies } = this.state;
+    return (
+      <section className="container">
+        {isLoading ? (
+          <div className="loader">
+            <span className="loader_text">Loading...</span>
+          </div>
+        ) : (
+          <div className="movies">
+            {movies.map(movie => (
+              <Movie
+                key={movie.id}
+                id={movie.id}
+                year={movie.year}
+                title={movie.title}
+                summary={movie.summary}
+                poster={movie.medium_cover_image}
+                genres={movie.genres}
+              />
+            ))}
+          </div>
+        )}
+      </section>
+    );
   }
 }
 
